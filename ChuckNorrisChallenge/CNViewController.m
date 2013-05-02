@@ -33,7 +33,7 @@
     //[AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/plain"]];
     [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObjects:@"text/html", nil]];
     self.title = @"Chuck Norris Joke Challenge";
-    self.jokeLabel.text = @"View did load, testing text";
+    self.jokeLabel.text = @"Loading...";
     [self displayARandomJoke];
 }
 
@@ -43,19 +43,17 @@
     // create a dictionary to store Chuck Norris data
     NSDictionary *root = (NSDictionary *)JSON;
     // drill down into first object
-    NSDictionary *results = [root valueForKey:@"value"];
+    NSDictionary *results = [root valueForKey:@"type"];
+    NSLog(@"%@", results);
     // grab the first pair
-    for (NSDictionary *row in results) {
-        id joke = [row valueForKey:@"joke"];
-        self.jokeLabel.text = @"Test this text";
-        //[NSString stringWithFormat:@"%@",joke];
-        NSLog(@"%@", joke);
-    }
+    NSDictionary *joke = [[root valueForKey:@"value"] valueForKey:@"joke"];
+    NSLog(@"%@", joke);
+    // self.jokeLabel.text = [NSString stringWithFormat:@"%@",joke];
 }
 
 - (void)displayARandomJoke{
     // set up the random joke URL
-    NSString *randomURL = [NSString stringWithFormat:@"http://api.icndb.com/jokes/random"];
+    NSString *randomURL = [NSString stringWithFormat:@"http://api.icndb.com/jokes/random/"];
     // encode special chars
     NSString *encodedURL = [randomURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     // save the encoded url
@@ -64,20 +62,7 @@
     NSURLRequest *request= [NSURLRequest requestWithURL:url];
     // Make a request to GET the JSON data.
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        // create a dictionary to store Chuck Norris data
-        NSDictionary *root = (NSDictionary *)JSON;
-        // drill down into first object
-        NSDictionary *results = [root valueForKey:@"value"];
-        // grab the first pair
-        for (NSDictionary *row in results) {
-            id joke = [row valueForKey:@"joke"];
-            self.jokeLabel.text = @"Test this text";
-            //[NSString stringWithFormat:@"%@",joke];
-            NSLog(@"%@", joke);
-        }
-
-        // save the joke and put it in the jokeLabel
-        // NSArray *aJoke = [joke lastObject];
+        [self randomJoke:JSON];
     }
                                          
     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
@@ -87,6 +72,9 @@
 
 }
 
+- (IBAction)refreshButtonPressed:(id)sender{
+    [self displayARandomJoke];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

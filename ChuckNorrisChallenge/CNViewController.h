@@ -10,4 +10,5 @@
 
 @interface CNViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *jokeLabel;
+- (IBAction)refreshButtonPressed:(id)sender;
 @end
