@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CNViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UILabel *jokeLabel;
-- (IBAction)refreshButtonPressed:(id)sender;
+@interface CNViewController : UIViewController <UIScrollViewDelegate,UIGestureRecognizerDelegate>
+
 @end

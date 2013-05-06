@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF9A37481737E68B003E4874 /* chucknorris.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AF9A37471737E68B003E4874 /* chucknorris.jpg */; };
 		AF9C4C8A17329DC7001E8E3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9C4C8917329DC7001E8E3B /* UIKit.framework */; };
 		AF9C4C8C17329DC7001E8E3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9C4C8B17329DC7001E8E3B /* Foundation.framework */; };
 		AF9C4C8E17329DC7001E8E3B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9C4C8D17329DC7001E8E3B /* CoreGraphics.framework */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AF9A37471737E68B003E4874 /* chucknorris.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chucknorris.jpg; sourceTree = "<group>"; };
 		AF9C4C8617329DC7001E8E3B /* ChuckNorrisChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChuckNorrisChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF9C4C8917329DC7001E8E3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AF9C4C8B17329DC7001E8E3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -133,6 +135,7 @@
 		AF9C4C8F17329DC7001E8E3B /* ChuckNorrisChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				AF9C4CE91732FE5A001E8E3B /* imgs */,
 				AF9C4CBF1732AC0F001E8E3B /* AFNetworking */,
 				AF9C4CB11732A2F8001E8E3B /* Geared */,
 				AF9C4CA617329DE4001E8E3B /* CNViewController.h */,
@@ -200,6 +203,14 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		AF9C4CE91732FE5A001E8E3B /* imgs */ = {
+			isa = PBXGroup;
+			children = (
+				AF9A37471737E68B003E4874 /* chucknorris.jpg */,
+			);
+			name = imgs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -260,6 +271,7 @@
 				AF9C4CB81732A2F8001E8E3B /* GearedSlab-Extrabold.ttf in Resources */,
 				AF9C4CB91732A2F8001E8E3B /* GearedSlab-Light.ttf in Resources */,
 				AF9C4CBA1732A2F8001E8E3B /* GearedSlab.ttf in Resources */,
+				AF9A37481737E68B003E4874 /* chucknorris.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +410,7 @@
 				AF9C4CA517329DC7001E8E3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

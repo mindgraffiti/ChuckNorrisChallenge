@@ -11,6 +11,12 @@
 
 @interface CNViewController ()
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *jokeLabel;
+@property (strong, nonatomic) UISwipeGestureRecognizer *oneFingerSwipeRight;
+
+- (IBAction)refreshButtonPressed:(id)sender;
 @end
 
 @implementation CNViewController
@@ -30,16 +36,46 @@
     [super viewDidLoad];
     
     // add another acceptable content type
-    //[AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"text/plain"]];
     [AFJSONRequestOperation addAcceptableContentTypes:[NSSet setWithObjects:@"text/html", nil]];
     self.title = @"Chuck Norris Joke Challenge";
     self.jokeLabel.text = @"Loading...";
+    
+    // add swipe gestures
+    self.oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenSwipedRight:)];
+    self.oneFingerSwipeRight.numberOfTouchesRequired = 1;
+    [self.oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    
+    [self.view addGestureRecognizer:self.oneFingerSwipeRight];
+    
+    [self displayJokeImage];
     [self displayARandomJoke];
+}
+
+- (void)screenSwipedRight:(UITapGestureRecognizer *)recognizer
+{
+    [self displayARandomJoke];
+}
+
+
+- (void)displayJokeImage{
+    UIImage *image = [UIImage imageNamed:@"chucknorris.jpg"];
+    self.imageView = [[UIImageView alloc] initWithImage:image];
+    [self.view addSubview:self.imageView];
+    
+    // 1. measure the size of the image
+    CGSize size = self.imageView.frame.size;
+    // 2. set the content size based on the image
+    self.scrollView.contentSize = size;
+    self.scrollView.contentOffset = CGPointMake(300, 300);
+
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.imageView;
 }
 
 // add a little AFNetworking magic to grab a random joke
 - (void)randomJoke:(id)JSON{
-    
     // create a dictionary to store Chuck Norris data
     NSDictionary *root = (NSDictionary *)JSON;
     // drill down into first object
@@ -48,7 +84,7 @@
     // grab the first pair
     NSDictionary *joke = [[root valueForKey:@"value"] valueForKey:@"joke"];
     NSLog(@"%@", joke);
-    // self.jokeLabel.text = [NSString stringWithFormat:@"%@",joke];
+    self.jokeLabel.text = [NSString stringWithFormat:@"%@",joke];
 }
 
 - (void)displayARandomJoke{
@@ -75,6 +111,9 @@
 - (IBAction)refreshButtonPressed:(id)sender{
     [self displayARandomJoke];
 }
+
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
