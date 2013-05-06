@@ -13,6 +13,9 @@
 
 @end
 
+NSString *const FlickrAPIKey = @"d0295072c7a217e8c8e9f4805e6439c5";
+// ac8632f586ffdd791cf9af3fffecb90c
+
 @implementation CNViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,18 +54,46 @@
     [self displayARandomJoke];
 }
 
-
 - (void)displayJokeImage{
-    UIImage *image = [UIImage imageNamed:@"chucknorris.jpg"];
+    self.randomNum = arc4random_uniform(7);
+    //self.randomNum = 3;
+    UIImage *image = [UIImage imageNamed:@"0.jpg"];
+    //NSLog(@"%d.jpg", self.randomNum);
     self.imageView = [[UIImageView alloc] initWithImage:image];
     [self.view addSubview:self.imageView];
+    self.imageView.center = self.scrollView.center;
     
-    // 1. measure the size of the image
-    CGSize size = self.imageView.frame.size;
-    // 2. set the content size based on the image
-    self.scrollView.contentSize = size;
-    self.scrollView.contentOffset = CGPointMake(300, 300);
+    /*
+    NSURL *picURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=chuck+norris&per_page=1&format=json&nojsoncallback=1&auth_token=72157633433724510-00bda4b4f1dd472d&api_sig=e882c850f29a3f76a35af6803e6c30ab", FlickrAPIKey];
+    
+    NSURLRequest *requestImage = [NSURLRequest requestWithURL:picURL];
+    NSLog(@"about to load image");
+    
+    AFImageRequestOperation *operationImage = [AFImageRequestOperation imageRequestOperationWithRequest:requestImage success:^(UIImage *flickrPic){
+        self.imageView = [[UIImageView alloc] initWithImage:self.flickrPic];
+        [self.view addSubview:self.imageView];
+        self.imageView.center = self.scrollView.center;
 
+        NSLog(@"image loaded");
+    }];
+    [operationImage start];
+     */
+}
+
+- (void)randomImage{
+    /*
+    // create a dictionary to store Chuck Norris data
+    NSDictionary *root = (NSDictionary *)flickrPic;
+    // drill down into first object
+    NSDictionary *results = [root valueForKey:@"photos"];
+    NSLog(@"%@", results);
+    // grab the first pair
+    NSDictionary *photo = [root valueForKey:@"photo"];
+    NSDictionary *owner = [photo valueForKey:@"owner"];
+    NSDictionary *picID = [photo valueForKey:@"id"];
+    NSLog(@"owner: %@, picID: %@", owner, picID);
+    */
+    
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
