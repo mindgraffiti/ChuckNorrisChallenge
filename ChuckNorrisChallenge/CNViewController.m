@@ -11,12 +11,6 @@
 
 @interface CNViewController ()
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UILabel *jokeLabel;
-@property (strong, nonatomic) UISwipeGestureRecognizer *oneFingerSwipeRight;
-
-- (IBAction)refreshButtonPressed:(id)sender;
 @end
 
 @implementation CNViewController
@@ -41,18 +35,19 @@
     self.jokeLabel.text = @"Loading...";
     
     // add swipe gestures
-    self.oneFingerSwipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenSwipedRight:)];
-    self.oneFingerSwipeRight.numberOfTouchesRequired = 1;
-    [self.oneFingerSwipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    self.swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(screenSwipedLeft:)];
     
-    [self.view addGestureRecognizer:self.oneFingerSwipeRight];
+    [self.swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    
+    [self.view addGestureRecognizer:self.swipeLeft];
     
     [self displayJokeImage];
     [self displayARandomJoke];
 }
 
-- (void)screenSwipedRight:(UITapGestureRecognizer *)recognizer
+- (void)screenSwipedLeft:(UIGestureRecognizer *)recognizer
 {
+    NSLog(@"screen was swiped left");
     [self displayARandomJoke];
 }
 
