@@ -13,8 +13,8 @@
 
 @end
 
-NSString *const FlickrAPIKey = @"d0295072c7a217e8c8e9f4805e6439c5";
-// ac8632f586ffdd791cf9af3fffecb90c
+NSString *const FlickrAPIKey = @"ac8632f586ffdd791cf9af3fffecb90c";
+NSString *word = @"chuck+norris";
 
 @implementation CNViewController
 
@@ -52,48 +52,37 @@ NSString *const FlickrAPIKey = @"d0295072c7a217e8c8e9f4805e6439c5";
 {
     NSLog(@"screen was swiped left");
     [self displayARandomJoke];
+    [self displayJokeImage];
 }
 
 - (void)displayJokeImage{
-    self.randomNum = arc4random_uniform(7);
-    //self.randomNum = 3;
-    UIImage *image = [UIImage imageNamed:@"0.jpg"];
-    //NSLog(@"%d.jpg", self.randomNum);
-    self.imageView = [[UIImageView alloc] initWithImage:image];
-    [self.view addSubview:self.imageView];
-    self.imageView.center = self.scrollView.center;
+    self.randomNum = arc4random_uniform(100);
+    NSString *imageString = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=chuck+norris&per_page=1&page=%d&size=m&format=json&nojsoncallback=1",FlickrAPIKey,self.randomNum];
     
-    /*
-    NSURL *picURL = [NSString stringWithFormat:@"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=chuck+norris&per_page=1&format=json&nojsoncallback=1&auth_token=72157633433724510-00bda4b4f1dd472d&api_sig=e882c850f29a3f76a35af6803e6c30ab", FlickrAPIKey];
+    NSURL *url = [NSURL URLWithString:imageString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
-    NSURLRequest *requestImage = [NSURLRequest requestWithURL:picURL];
-    NSLog(@"about to load image");
-    
-    AFImageRequestOperation *operationImage = [AFImageRequestOperation imageRequestOperationWithRequest:requestImage success:^(UIImage *flickrPic){
-        self.imageView = [[UIImageView alloc] initWithImage:self.flickrPic];
-        [self.view addSubview:self.imageView];
-        self.imageView.center = self.scrollView.center;
-
-        NSLog(@"image loaded");
-    }];
-    [operationImage start];
-     */
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+            [self randomImage:JSON];
+        }
+        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"Error on display random image");
+        }];
+    [operation start];
 }
 
-- (void)randomImage{
-    /*
-    // create a dictionary to store Chuck Norris data
-    NSDictionary *root = (NSDictionary *)flickrPic;
-    // drill down into first object
-    NSDictionary *results = [root valueForKey:@"photos"];
-    NSLog(@"%@", results);
-    // grab the first pair
-    NSDictionary *photo = [root valueForKey:@"photo"];
-    NSDictionary *owner = [photo valueForKey:@"owner"];
-    NSDictionary *picID = [photo valueForKey:@"id"];
-    NSLog(@"owner: %@, picID: %@", owner, picID);
-    */
-    
+- (void)randomImage:(id)JSON{
+    NSDictionary *results = (NSDictionary *) JSON;
+    NSArray *photos = [[results objectForKey:@"photos"] objectForKey:@"photo"];
+    for (NSDictionary *photo in photos){
+        NSString *photoURLString =
+        [NSString stringWithFormat:@"http://farm%@.static.flickr.com/%@/%@_%@_m.jpg",
+         [photo objectForKey:@"farm"], [photo objectForKey:@"server"],
+         [photo objectForKey:@"id"], [photo objectForKey:@"secret"]];
+        NSLog(@"photoURLString: %@", photoURLString);
+        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:photoURLString]];
+        self.imageView.image = [UIImage imageWithData:imageData];
+    }
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
@@ -128,7 +117,7 @@ NSString *const FlickrAPIKey = @"d0295072c7a217e8c8e9f4805e6439c5";
     }
                                          
     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Error on display random joke: %@", error);
     }];
     [operation start];
 
@@ -136,6 +125,7 @@ NSString *const FlickrAPIKey = @"d0295072c7a217e8c8e9f4805e6439c5";
 
 - (IBAction)refreshButtonPressed:(id)sender{
     [self displayARandomJoke];
+    [self displayJokeImage];
 }
 
 
